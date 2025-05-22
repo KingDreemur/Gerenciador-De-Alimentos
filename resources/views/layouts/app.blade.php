@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>@yield('titulo')"Minha Aplicação"</title>
-    <link rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/alimentos.css') }}">
+
 </head>
 <body>
     

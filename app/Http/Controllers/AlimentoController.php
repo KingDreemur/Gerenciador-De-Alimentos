@@ -10,10 +10,11 @@ use Carbon\Carbon;
 class AlimentoController extends Controller
 {
     public function index()
-    {
-        $alimentos = Alimento::with('categoria')->get();
-        return view('alimentos.index', compact('alimentos'));
-    }
+{
+    $alimentos = Alimento::with('categoria')->get();
+    return view('alimentos.index', compact('alimentos'));
+}
+
 
     public function create()
     {
@@ -71,15 +72,27 @@ class AlimentoController extends Controller
         return redirect()->route('alimentos.index')->with('success', 'Alimento excluído com sucesso.');
     }
 
+    // Função para alimentos com validade próxima
     public function validadeProxima()
     {
-        $alimentos = Alimento::validadeProxima()->get();
+        $hoje = Carbon::now();
+        $limite = $hoje->copy()->addDays(7);
+
+        $alimentos = Alimento::whereBetween('validade', [$hoje->toDateString(), $limite->toDateString()])
+            ->orderBy('validade', 'asc')
+            ->get();
+
         return view('alimentos.validade_proxima', compact('alimentos'));
     }
 
+    // Função para alimentos com estoque baixo
     public function estoqueBaixo()
     {
-        $alimentos = Alimento::estoqueBaixo()->get();
+        $limite = 5;
+        $alimentos = Alimento::where('quantidade', '<', $limite)
+            ->orderBy('quantidade', 'asc')
+            ->get();
+
         return view('alimentos.estoque_baixo', compact('alimentos'));
     }
 }

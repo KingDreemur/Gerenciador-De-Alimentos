@@ -2,17 +2,17 @@
 
 @section('content')
     <div class="container">
-        <h2>Alimentos com Validade Próxima (até 7 dias)</h2>
+        <h2>Alimentos com Estoque Baixo (menos de 5 unidades)</h2>
 
         @if($alimentos->isEmpty())
-            <p>Nenhum alimento com validade próxima encontrado.</p>
+            <p>Nenhum alimento com estoque baixo encontrado.</p>
         @else
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Validade</th>
                         <th>Quantidade</th>
+                        <th>Validade</th>
                         <th>Categoria</th>
                     </tr>
                 </thead>
@@ -20,8 +20,8 @@
                     @foreach ($alimentos as $alimento)
                         <tr>
                             <td>{{ $alimento->nome }}</td>
-                            <td>{{ \Carbon\Carbon::parse($alimento->validade)->format('d/m/Y') }}</td>
                             <td>{{ $alimento->quantidade }}</td>
+                            <td>{{ \Carbon\Carbon::parse($alimento->validade)->format('d/m/Y') }}</td>
                             <td>{{ $alimento->categoria->nome ?? 'Sem categoria' }}</td>
                         </tr>
                     @endforeach
